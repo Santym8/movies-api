@@ -1,0 +1,8 @@
+POST  http://localhost:5236/movies
+Content-Type: application/json
+
+{
+    "title": "The Matrix",
+    "genre": "Sci-Fi",
+    "releaseDate": "1999-03-31"
+} 

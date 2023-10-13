@@ -1,0 +1,8 @@
+PUT  http://localhost:5236/movies/2
+Content-Type: application/json
+
+{
+    "title": "The Matrix 2",
+    "genre": "Sci-Fi",
+    "releaseDate": "1999-03-31"
+} 
