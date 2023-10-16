@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Movies.api.Dto;
-using Movies.api.Models;
 using Movies.api.Services;
 
 namespace Movies.api.Controllers;

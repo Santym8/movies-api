@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using Movies.api.DbContexts;
 using Movies.api.Dto;
+using Movies.api.Exceptions.Director;
 using Movies.api.Exceptions.Movie;
 using Movies.api.Models;
 
@@ -15,11 +17,16 @@ public class MovieService : IMovieService
 
     public void AddMovie(MovieRequest movie)
     {
+        var director = _dbContext.Directors.Find(movie.DirectorId)
+            ?? throw new DirectorNotFoundException();
+
         _dbContext.Movies.Add(new Movie
         {
             Title = movie.Title,
             Genre = movie.Genre,
-            ReleaseDate = movie.ReleaseDate
+            ReleaseDate = movie.ReleaseDate,
+            Director = director
+
         });
         _dbContext.SaveChanges();
     }
@@ -33,17 +40,31 @@ public class MovieService : IMovieService
         _dbContext.SaveChanges();
     }
 
-    public Movie GetMovieById(int id)
+    public MovieResponse GetMovieById(int id)
     {
-        var movie = _dbContext.Movies.Find(id)
+        var movie = _dbContext.Movies.Include(m => m.Director).FirstOrDefault(m => m.Id == id)
             ?? throw new MovieNotFoundException();
 
-        return movie;
+        return new MovieResponse(
+            movie.Id,
+            movie.Title,
+            movie.Genre,
+            movie.ReleaseDate,
+            movie.Director.Id
+        );
     }
 
-    public List<Movie> GetMovies()
+    public List<MovieResponse> GetMovies()
     {
-        return _dbContext.Movies.ToList();
+        var movies = _dbContext.Movies.Include(m => m.Director).ToList();
+
+        return movies.Select(movie => new MovieResponse(
+            movie.Id,
+            movie.Title,
+            movie.Genre,
+            movie.ReleaseDate,
+            movie.Director.Id
+        )).ToList();
     }
 
     public void UpdateMovie(int id, MovieRequest movie)

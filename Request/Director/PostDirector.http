@@ -1,0 +1,7 @@
+POST http://localhost:5236/director
+Content-Type: application/json
+
+{
+    "firstName": "director1",
+    "lastName": "director1"
+} 

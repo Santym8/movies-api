@@ -22,6 +22,27 @@ namespace Movies.api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Movies.api.Models.Director", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Directors");
+                });
+
             modelBuilder.Entity("Movies.api.Models.Movie", b =>
                 {
                     b.Property<int>("Id")
@@ -29,6 +50,9 @@ namespace Movies.api.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DirectorId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Genre")
                         .IsRequired()
@@ -43,7 +67,25 @@ namespace Movies.api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DirectorId");
+
                     b.ToTable("Movies");
+                });
+
+            modelBuilder.Entity("Movies.api.Models.Movie", b =>
+                {
+                    b.HasOne("Movies.api.Models.Director", "Director")
+                        .WithMany("Movies")
+                        .HasForeignKey("DirectorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Director");
+                });
+
+            modelBuilder.Entity("Movies.api.Models.Director", b =>
+                {
+                    b.Navigation("Movies");
                 });
 #pragma warning restore 612, 618
         }

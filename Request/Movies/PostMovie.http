@@ -4,5 +4,6 @@ Content-Type: application/json
 {
     "title": "The Matrix",
     "genre": "Sci-Fi",
-    "releaseDate": "1999-03-31"
+    "releaseDate": "1999-03-31",
+    "directorId": 1
 } 
