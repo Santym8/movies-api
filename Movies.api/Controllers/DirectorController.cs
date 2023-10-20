@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Movies.api.Auth;
 using Movies.api.Dto;
 using Movies.api.Services;
 
@@ -6,6 +7,7 @@ namespace Movies.api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class DirectorController : ControllerBase
 {
     private readonly IDirectorService _directorService;
